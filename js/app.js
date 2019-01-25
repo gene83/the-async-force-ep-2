@@ -3,20 +3,21 @@
 function reqResource() {
   const genReq = new XMLHttpRequest();
   const genReqListener = function() {
-    const genObj = JSON.parse(this.responseText);
-    const contContainer = document.querySelector('#contentContainer');
-
-    while (contContainer.firstChild) {
-      contContainer.removeChild(contContainer.firstChild);
-    }
-
     if (this.status !== 200) {
       const errorDiv = document.createElement('div');
       errorDiv.innerHTML = `Error: Fetching resource: ${this.responseURL} ${
         genObj.detail
       }`;
       contContainer.appendChild(errorDiv);
-    } else if (resourceType.value === 'people') {
+      return;
+    }
+
+    const genObj = JSON.parse(this.responseText);
+    const contContainer = document.querySelector('#contentContainer');
+
+    contContainer.innerHTML = '';
+
+    if (resourceType.value === 'people') {
       const nameH2 = document.createElement('h2');
       nameH2.innerHTML = genObj.name;
       contContainer.appendChild(nameH2);
